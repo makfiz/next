@@ -8,7 +8,7 @@ const DatePickerComponent = ({ selectedDate, onDateChange }) => {
     
   return (
     <div>
-      <h3>Выберите дату:</h3>
+      <h3>Select date:</h3>
       <DatePicker
          selected={selectedDate}
          onChange={onDateChange}
