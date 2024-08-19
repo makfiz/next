@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import DatePickerComponent from "./components/DatePickerComponent";
-import styles from "./page.module.css";
+// import styles from "./page.module.css";
 
 export default function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
