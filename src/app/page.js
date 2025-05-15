@@ -133,7 +133,9 @@ export default function Home() {
                                 }
                               )}
                             </span>
-                            <span>{item.title}</span>
+                            <span style={{ fontWeight: 'bold' }}>
+                              {item.title}
+                            </span>
                             <span
                               style={{
                                 flex: 1,
@@ -146,6 +148,10 @@ export default function Home() {
                                 href={item.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                style={{
+                                  color: 'blue',
+                                  textDecoration: 'underline',
+                                }}
                               >
                                 {item.url}
                               </a>
