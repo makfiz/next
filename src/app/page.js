@@ -109,55 +109,58 @@ export default function Home() {
                   {isExpanded &&
                     (navigation.length > 0 ? (
                       <ul style={{ marginLeft: 20, marginBottom: 10 }}>
-                        {navigation.map((item, idx) => (
-                          <li
-                            key={idx}
-                            style={{
-                              fontSize: '0.9rem',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              gap: '1rem',
-                              padding: '4px 0',
-                              borderBottom: '1px solid #eee',
-                            }}
-                          >
-                            <span>
-                              {new Date(item.timestamp).toLocaleTimeString(
-                                'uk-UA',
-                                {
-                                  hour12: false,
-                                  timeZone: 'Europe/Kyiv',
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                  second: '2-digit',
-                                }
-                              )}
-                            </span>
-                            <span style={{ fontWeight: 'bold' }}>
-                              {item.title}
-                            </span>
-                            <span
+                        {navigation
+                          .slice()
+                          .reverse()
+                          .map((item, idx) => (
+                            <li
+                              key={idx}
                               style={{
-                                flex: 1,
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
+                                fontSize: '0.9rem',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                gap: '1rem',
+                                padding: '4px 0',
+                                borderBottom: '1px solid #eee',
                               }}
                             >
-                              <a
-                                href={item.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                              <span>
+                                {new Date(item.timestamp).toLocaleTimeString(
+                                  'uk-UA',
+                                  {
+                                    hour12: false,
+                                    timeZone: 'Europe/Kyiv',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit',
+                                  }
+                                )}
+                              </span>
+                              <span style={{ fontWeight: 'bold' }}>
+                                {item.title}
+                              </span>
+                              <span
                                 style={{
-                                  color: 'blue',
-                                  textDecoration: 'underline',
+                                  flex: 1,
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
                                 }}
                               >
-                                {item.url}
-                              </a>
-                            </span>
-                          </li>
-                        ))}
+                                <a
+                                  href={item.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    color: 'blue',
+                                    textDecoration: 'underline',
+                                  }}
+                                >
+                                  {item.url}
+                                </a>
+                              </span>
+                            </li>
+                          ))}
                       </ul>
                     ) : (
                       <span
