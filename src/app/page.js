@@ -10,13 +10,45 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedUser, setExpandedUser] = useState(null);
+  const [userNavigation, setUserNavigation] = useState({});
+  const [navigationLoading, setNavigationLoading] = useState(false);
+  const handleUserClick = async (username) => {
+    const isAlreadyExpanded = expandedUser === username;
+    setExpandedUser(isAlreadyExpanded ? null : username);
+
+    if (!isAlreadyExpanded && !userNavigation[username]) {
+      const day = selectedDate.getDate();
+      const month = selectedDate.getMonth() + 1;
+      const year = selectedDate.getFullYear();
+
+      const navUrl = new URL(
+        'https://blumbittrackerapi.onrender.com/statistics/navigation'
+      );
+      navUrl.searchParams.set('day', day);
+      navUrl.searchParams.set('month', month);
+      navUrl.searchParams.set('year', year);
+      navUrl.searchParams.set('username', username);
+
+      try {
+        setNavigationLoading(true);
+        const res = await fetch(navUrl);
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        const navData = await res.json();
+        setUserNavigation((prev) => ({ ...prev, [username]: navData }));
+      } catch (err) {
+        console.error('Failed to fetch user navigation:', err.message);
+      } finally {
+        setNavigationLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     const day = selectedDate.getDate(); // День месяца (1-31)
     const month = selectedDate.getMonth() + 1; // Месяцы идут от 0 (январь) до 11 (декабрь), поэтому добавляем 1
     const year = selectedDate.getFullYear(); // Год
 
-    const url = new URL('https://blumbittrackerapi.onrender.com/statistics');
+    const url = new URL('https://blumbittrackerapi.onrender.com/statistics/s');
     url.searchParams.set('day', day);
     url.searchParams.set('month', month);
     url.searchParams.set('year', year);
@@ -67,12 +99,8 @@ export default function Home() {
               const year = selectedDate.getFullYear().toString();
               const activity =
                 user?.activities?.[year]?.months?.[month]?.days?.[day] || {};
-              const {
-                minutes,
-                startOfActivity,
-                lastActivity,
-                navigation = [],
-              } = activity;
+              const { minutes, startOfActivity, lastActivity } = activity;
+              const navigation = userNavigation[user.username] || [];
               const usernameDisplay = user.username.split('@')[0];
 
               const isExpanded = expandedUser === user.username;
@@ -92,11 +120,7 @@ export default function Home() {
                         cursor: 'pointer',
                         color: expandedUser === user.username ? 'red' : 'blue',
                       }}
-                      onClick={() =>
-                        setExpandedUser(
-                          expandedUser === user.username ? null : user.username
-                        )
-                      }
+                      onClick={() => handleUserClick(user.username)}
                     >
                       {usernameDisplay}
                     </span>
@@ -107,6 +131,7 @@ export default function Home() {
                     <span>{lastActivity}</span>
                   </li>
                   {isExpanded &&
+                    navigationLoading &&
                     (navigation.length > 0 ? (
                       <ul style={{ marginLeft: 20, marginBottom: 10 }}>
                         {navigation
