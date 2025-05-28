@@ -100,7 +100,7 @@ export default function Home() {
               const activity =
                 user?.activities?.[year]?.months?.[month]?.days?.[day] || {};
               const { minutes, startOfActivity, lastActivity } = activity;
-              const navigation = userNavigation[user.username] || [];
+              // const navigation = userNavigation[user.username] || [];
               const usernameDisplay = user.username.split('@')[0];
 
               const isExpanded = expandedUser === user.username;
@@ -136,7 +136,7 @@ export default function Home() {
                     ) : userNavigation[user.username] &&
                       userNavigation[user.username].length > 0 ? (
                       <ul style={{ marginLeft: 20, marginBottom: 10 }}>
-                        {navigation
+                        {userNavigation[user.username]
                           .slice()
                           .reverse()
                           .map((item, idx) => (
