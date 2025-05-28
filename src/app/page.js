@@ -131,8 +131,10 @@ export default function Home() {
                     <span>{lastActivity}</span>
                   </li>
                   {isExpanded &&
-                    navigationLoading &&
-                    (navigation.length > 0 ? (
+                    (navigationLoading ? (
+                      <p style={{ marginLeft: 20 }}>Loading navigation...</p>
+                    ) : userNavigation[user.username] &&
+                      userNavigation[user.username].length > 0 ? (
                       <ul style={{ marginLeft: 20, marginBottom: 10 }}>
                         {navigation
                           .slice()
