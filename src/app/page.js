@@ -133,10 +133,10 @@ export default function Home() {
                   {isExpanded &&
                     (navigationLoading ? (
                       <p style={{ marginLeft: 20 }}>Loading navigation...</p>
-                    ) : userNavigation[user.username] &&
-                      userNavigation[user.username].length > 0 ? (
+                    ) : userNavigation[username] &&
+                      userNavigation[navigation].length > 0 ? (
                       <ul style={{ marginLeft: 20, marginBottom: 10 }}>
-                        {userNavigation[user.username]
+                        {userNavigation[navigation]
                           .slice()
                           .reverse()
                           .map((item, idx) => (
