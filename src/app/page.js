@@ -10,7 +10,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedUser, setExpandedUser] = useState(null);
-  const [userNavigation, setUserNavigation] = useState({});
+  const [userNavigation, setUserNavigation] = useState([]);
   const [navigationLoading, setNavigationLoading] = useState(false);
   const handleUserClick = async (username) => {
     const isAlreadyExpanded = expandedUser === username;
@@ -30,11 +30,12 @@ export default function Home() {
       navUrl.searchParams.set('username', username);
 
       try {
+        setUserNavigation([]);
         setNavigationLoading(true);
         const res = await fetch(navUrl);
         if (!res.ok) throw new Error(`Error ${res.status}`);
-        const navData = await res.json();
-        setUserNavigation((prev) => ({ ...prev, [username]: navData }));
+        const data = await res.json();
+        setUserNavigation(data.navigation);
       } catch (err) {
         console.error('Failed to fetch user navigation:', err.message);
       } finally {
@@ -133,10 +134,9 @@ export default function Home() {
                   {isExpanded &&
                     (navigationLoading ? (
                       <p style={{ marginLeft: 20 }}>Loading navigation...</p>
-                    ) : userNavigation[username] &&
-                      userNavigation[navigation].length > 0 ? (
+                    ) : userNavigation.length > 0 ? (
                       <ul style={{ marginLeft: 20, marginBottom: 10 }}>
-                        {userNavigation[navigation]
+                        {userNavigation
                           .slice()
                           .reverse()
                           .map((item, idx) => (
